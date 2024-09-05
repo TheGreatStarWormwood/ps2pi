@@ -1,0 +1,26 @@
+
+# my optional module name
+MODULE=gpio-ps2-serio
+ccflags-y := -std=gnu99 -Wno-declaration-after-statement
+
+ 
+# this two variables, depends where you have you raspberry kernel source and tools installed
+ 
+#KERNEL_SRC=/usr/src/linux-headers-5.10.103-v7+/
+KERNEL_SRC=/usr/lib/modules/5.1.103.v7+/build/
+ 
+ 
+obj-m += ${MODULE}.o
+ 
+module_upload=${MODULE}.ko
+ 
+all: ${MODULE}.ko
+ 
+${MODULE}.ko: ${MODULE}.c
+	make -C ${KERNEL_SRC} M=$(PWD) modules
+ 
+clean:
+	make -C ${KERNEL_SRC} M=$(PWD) clean
+ 
+info:
+	modinfo  ${module_upload}
